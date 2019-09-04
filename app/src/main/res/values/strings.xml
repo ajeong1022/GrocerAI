@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">GrocerAI</string>
     <string name="button_begn_shopping">Begin Shopping</string>
-    <string name="button_browse_recipes">Browse Recipes</string>
+    <string name="button_browse_recipes">Recipes</string>
     <string name="grocerai_greeting_icon_description">GrocerAI Greeting Icon</string>
     <string name="recipe_selection_instruction">Let\'s start by selecting some dishes</string>
+    <string name="greeting_app_title">GROCER.AI</string>
 </resources>

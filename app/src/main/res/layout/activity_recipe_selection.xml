@@ -11,14 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:gravity="center"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:text="@string/recipe_selection_instruction"
         android:textAlignment="center"
-        android:gravity="center"
         android:textSize="24sp" />
 
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
@@ -27,7 +28,21 @@
         <ListView
             android:id="@+id/lv_recipe_search_result"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recipe_searchBar" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_confirm_selection"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/ic_check" />
+
 
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/recipe_searchBar"
@@ -38,16 +53,16 @@
             app:mt_placeholder="Search for a recipe..."
             app:mt_placeholderColor="@android:color/tab_indicator_text" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_selected_recipes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/tv_selected_recipes"
-        android:textSize="24sp"
-        android:textAlignment="center"
         android:gravity="center"
-        tools:text="Spaghetti, Pizza"/>
+        android:textAlignment="center"
+        android:textSize="24sp"
+        tools:text="Spaghetti, Pizza" />
 
 </LinearLayout>
