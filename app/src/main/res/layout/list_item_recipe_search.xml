@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/iv_recipe_search_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/groceries" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_recipe_search_image"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/tv_recipe_search_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/chelsea_market"
+                android:includeFontPadding="false"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Some Recipe" />
+
+            <TextView
+                android:id="@+id/tv_recipe_search_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                tools:text="Some recipe URL" />
+
+            <TextView
+                android:id="@+id/tv_recipe_search_ingredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/chelsea_market"
+                android:includeFontPadding="false"
+                android:textSize="16sp"
+                tools:text="Some recipe ingredient list" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

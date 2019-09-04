@@ -1,0 +1,71 @@
+package com.example.grocerai;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.grocerai.RetroFit.RecipeSearchResult.Recipe;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+public class RecipeSearchAdapter extends RecyclerView.Adapter {
+
+    private ArrayList<Recipe> searchResults;
+
+    public RecipeSearchAdapter (ArrayList<Recipe> searchResults) {
+        this.searchResults = searchResults;
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        CardView cardView = (CardView) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_recipe_search, parent, false);
+        return new RecipeSearchViewHolder(cardView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Recipe recipe = searchResults.get(position);
+        RecipeSearchViewHolder viewHolder = (RecipeSearchViewHolder) holder;
+        Picasso
+                .get()
+                .load(recipe.getImageURL())
+                .placeholder(R.drawable.groceries)
+                .into(viewHolder.imageView);
+
+        viewHolder.titleView.setText(recipe.getTitle());
+        viewHolder.urlView.setText(recipe.getURL());
+        //TODO: Implement list processing to show ingredients in appropriate format.
+        viewHolder.ingreidentView.setText(recipe.getIngredients().get(0));
+    }
+
+    @Override
+    public int getItemCount() {
+        return searchResults.size();
+    }
+
+    private class RecipeSearchViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView titleView;
+        private TextView urlView;
+        private TextView ingreidentView;
+        private ImageView imageView;
+
+        public RecipeSearchViewHolder(@NonNull View itemView) {
+            super(itemView);
+            titleView = itemView.findViewById(R.id.tv_recipe_search_title);
+            urlView = itemView.findViewById(R.id.tv_recipe_search_url);
+            ingreidentView = itemView.findViewById(R.id.tv_recipe_search_ingredients);
+            imageView = itemView.findViewById(R.id.iv_recipe_search_image);
+        }
+    }
+
+}

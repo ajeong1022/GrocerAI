@@ -2,7 +2,6 @@ package com.example.grocerai.RetroFit;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -48,27 +47,35 @@ public class RecipeSearchResult {
     }
 
     public List<Recipe> extractRecipes() {
-        JsonParser parser = new JsonParser();
         List<Recipe> recipes = new ArrayList<>();
         for (int i = 0; i < hits.size(); i++) {
             JsonObject wrapper = hits.get(i).getAsJsonObject();
             JsonObject recipe = wrapper.getAsJsonObject("recipe");
+
+            String title = recipe.get("label").getAsString();
+            String imageURL = recipe.get("image").getAsString();
+            String URL = recipe.get("url").getAsString();
+
             List<String> ingredients = new ArrayList<>();
             JsonArray ingredientLines = recipe.getAsJsonArray("ingredientLines");
             for (int j = 0; j < ingredientLines.size(); j++) {
-                ingredients.add(ingredientLines.get(j).toString());
+                ingredients.add(ingredientLines.get(j).getAsString());
             }
-            recipes.add(new Recipe(recipe.get("label").toString(), ingredients));
+            recipes.add(new Recipe(title, imageURL, URL, ingredients));
         }
         return recipes;
     }
 
     public class Recipe {
         private String title;
+        private String imageURL;
+        private String URL;
         private List<String> ingredients;
 
-        public Recipe(String title, List<String> ingredients) {
+        public Recipe(String title, String imageURL, String URL, List<String> ingredients) {
             this.title = title;
+            this.imageURL = imageURL;
+            this.URL = URL;
             this.ingredients = ingredients;
         }
 
@@ -78,6 +85,14 @@ public class RecipeSearchResult {
 
         public List<String> getIngredients() {
             return ingredients;
+        }
+
+        public String getImageURL() {
+            return imageURL;
+        }
+
+        public String getURL() {
+            return URL;
         }
     }
 }

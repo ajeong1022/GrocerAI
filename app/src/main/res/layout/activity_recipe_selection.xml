@@ -3,20 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/ic_launcher_background"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".RecipeSelectionActivity">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
         android:text="@string/recipe_selection_instruction"
         android:textAlignment="center"
-        android:textSize="24sp" />
+        android:includeFontPadding="false"
+        android:textSize="20sp" />
 
 
     <RelativeLayout
@@ -25,11 +27,14 @@
         android:layout_weight="3"
         android:orientation="vertical">
 
-        <ListView
-            android:id="@+id/lv_recipe_search_result"
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/recipe_searchBar" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/recipe_searchBar"
+            android:id="@+id/rv_recipe_search_result"/>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -49,9 +54,11 @@
             style="@style/MaterialSearchBarLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:mt_maxSuggestionsCount="10"
-            app:mt_placeholder="Search for a recipe..."
-            app:mt_placeholderColor="@android:color/tab_indicator_text" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:mt_roundedSearchBarEnabled="true"
+            app:mt_hint="Spaghetti Bolognese"
+            app:mt_maxSuggestionsCount="10" />
 
     </RelativeLayout>
 

@@ -15,8 +15,7 @@
             android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".CameraActivity"
-            android:parentActivityName=".GroceryListActivity"
-            android:theme="@style/NoActionBar" />
+            android:parentActivityName=".GroceryListActivity"/>
         <activity
             android:name=".GroceryListActivity"
             android:parentActivityName=".RecipeSelectionActivity" />
@@ -24,8 +23,7 @@
             android:name=".RecipeSelectionActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/NoActionBar">
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
