@@ -2,6 +2,8 @@ package com.example.grocerai;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,9 +48,10 @@ public class RecipeSearchAdapter extends RecyclerView.Adapter {
                 .placeholder(R.drawable.groceries)
                 .into(imageView);
         viewHolder.titleView.setText(recipe.getTitle());
-        viewHolder.urlView.setText(recipe.getURL());
+        TextView urlView = viewHolder.urlView;
+        urlView.setMovementMethod(LinkMovementMethod.getInstance());
+        urlView.setText(Html.fromHtml(urlView.getContext().getString(R.string.recipe_search_url,recipe.getURL())));
         //TODO: Implement list processing to show ingredients in appropriate format.
-        viewHolder.ingreidentView.setText(recipe.getIngredients().get(0));
     }
 
     @Override
@@ -77,6 +80,7 @@ public class RecipeSearchAdapter extends RecyclerView.Adapter {
                     Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
                     selectedRecipeAdapter.addItem(image);
                     selectedRecipeAdapter.notifyDataSetChanged();
+                    selectedRecipeAdapter.onSelectedRecipeCountChanged();
                 }
             });
         }

@@ -3,6 +3,8 @@ package com.example.grocerai;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +34,8 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
     private MaterialSearchBar mSearchBar;
     private RecyclerView mSearchResultView;
     private RecyclerView mSelectedRecipesView;
+    private LinearLayout mSearchEmptyView;
+    private LinearLayout mSelectedEmptyView;
     private FloatingActionButton mFab;
     private RecipeSearchAdapter recipeSearchAdapter;
     private SelectedRecipeAdapter selectedRecipeAdapter;
@@ -60,19 +64,15 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
         mSearchResultView.setLayoutManager(layoutManager);
         mSearchResultView.setAdapter(recipeSearchAdapter);
 
-//        mFab = findViewById(R.id.fab_confirm_selection);
-//        mFab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(RecipeSelectionActivity.this, GroceryListActivity.class);
-//                //Process recipe ingredient compression here
-//                //Dummy data
-//                ArrayList<String> ingredients = new ArrayList<>();
-//                for (String recipe : selectedRecipes) ingredients.add("Ingredient for " + recipe);
-//                intent.putStringArrayListExtra("recipes", ingredients);
-//                startActivity(intent);
-//            }
-//        });
+        mSearchEmptyView = findViewById(R.id.ll_empty_search_result_view);
+        mSelectedEmptyView = findViewById(R.id.ll_empty_search_selected_view);
+        selectedRecipeAdapter.setSelectedRecipeCountChangedListener(new SelectedRecipeCountChangedListener() {
+            @Override
+            public void OnSelectedRecipeCountChanged() {
+                if (selectedRecipeAdapter.getItemCount() == 0 ) mSelectedEmptyView.setVisibility(View.VISIBLE);
+                else mSelectedEmptyView.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -96,6 +96,7 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
                     searchResults.clear();
                     searchResults.addAll(recipes);
                     recipeSearchAdapter.notifyDataSetChanged();
+                    mSearchEmptyView.setVisibility(View.GONE);
                 }
             }
 

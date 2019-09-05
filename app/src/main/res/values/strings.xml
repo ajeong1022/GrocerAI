@@ -6,4 +6,8 @@
     <string name="recipe_selection_actionbar">Choose Recipes</string>
     <string name="recipe_selection_instruction">Start by selecting a dish</string>
     <string name="greeting_app_title">GROCER.AI</string>
+    <string name="recipe_search_url">&lt;a href="%1$s">Detailed Recipe&lt;/a></string>
+    <string name="confirm_recipe_selection">SHOW WHAT I NEED!</string>
+    <string name="empty_view_no_search">There are no search results.</string>
+    <string name="empty_view_no_selected">There are no selected recipes.</string>
 </resources>

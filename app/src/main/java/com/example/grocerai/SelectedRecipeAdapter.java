@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class SelectedRecipeAdapter extends RecyclerView.Adapter {
 
     private ArrayList<Bitmap> images;
+    private SelectedRecipeCountChangedListener listener;
 
     public SelectedRecipeAdapter(ArrayList<Bitmap> images) {
         this.images = images;
@@ -45,6 +46,14 @@ public class SelectedRecipeAdapter extends RecyclerView.Adapter {
         images.add(b);
     }
 
+    public void setSelectedRecipeCountChangedListener(SelectedRecipeCountChangedListener listener) {
+        this.listener = listener;
+    }
+
+    public void onSelectedRecipeCountChanged() {
+        listener.OnSelectedRecipeCountChanged();
+    }
+
     private class SelectedRecipeViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView recipeImageView;
@@ -61,6 +70,7 @@ public class SelectedRecipeAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     images.remove(((BitmapDrawable) recipeImageView.getDrawable()).getBitmap());
                     SelectedRecipeAdapter.this.notifyDataSetChanged();
+                    listener.OnSelectedRecipeCountChanged();
                 }
             });
         }

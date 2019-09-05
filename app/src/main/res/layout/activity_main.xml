@@ -39,7 +39,7 @@
         android:includeFontPadding="false"
         android:padding="10dp"
         android:text="@string/button_begn_shopping"
-        android:textColor="#8A272727"
+        android:textColor="#8A070707"
         android:textSize="22sp" />
 
     <Button
@@ -51,7 +51,7 @@
         android:includeFontPadding="false"
         android:padding="10dp"
         android:text="@string/button_browse_recipes"
-        android:textColor="#8A272727"
+        android:textColor="#8A070707"
         android:textSize="22sp" />
 
 
