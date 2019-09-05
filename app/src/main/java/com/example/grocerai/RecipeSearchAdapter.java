@@ -1,5 +1,7 @@
 package com.example.grocerai;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,11 @@ import java.util.ArrayList;
 public class RecipeSearchAdapter extends RecyclerView.Adapter {
 
     private ArrayList<Recipe> searchResults;
+    private SelectedRecipeAdapter selectedRecipeAdapter;
 
-    public RecipeSearchAdapter (ArrayList<Recipe> searchResults) {
+    public RecipeSearchAdapter(ArrayList<Recipe> searchResults, SelectedRecipeAdapter selectedRecipeAdapter) {
         this.searchResults = searchResults;
+        this.selectedRecipeAdapter = selectedRecipeAdapter;
     }
 
     @NonNull
@@ -35,12 +39,12 @@ public class RecipeSearchAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Recipe recipe = searchResults.get(position);
         RecipeSearchViewHolder viewHolder = (RecipeSearchViewHolder) holder;
+        ImageView imageView = viewHolder.imageView;
         Picasso
                 .get()
                 .load(recipe.getImageURL())
                 .placeholder(R.drawable.groceries)
-                .into(viewHolder.imageView);
-
+                .into(imageView);
         viewHolder.titleView.setText(recipe.getTitle());
         viewHolder.urlView.setText(recipe.getURL());
         //TODO: Implement list processing to show ingredients in appropriate format.
@@ -65,6 +69,16 @@ public class RecipeSearchAdapter extends RecyclerView.Adapter {
             urlView = itemView.findViewById(R.id.tv_recipe_search_url);
             ingreidentView = itemView.findViewById(R.id.tv_recipe_search_ingredients);
             imageView = itemView.findViewById(R.id.iv_recipe_search_image);
+            imageView.setBackground(imageView.getContext().getDrawable(R.drawable.background_rounding));
+            imageView.setClipToOutline(true);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                    selectedRecipeAdapter.addItem(image);
+                    selectedRecipeAdapter.notifyDataSetChanged();
+                }
+            });
         }
     }
 

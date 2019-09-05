@@ -1,10 +1,8 @@
 package com.example.grocerai;
 
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,11 +31,12 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
 
     private MaterialSearchBar mSearchBar;
     private RecyclerView mSearchResultView;
+    private RecyclerView mSelectedRecipesView;
     private FloatingActionButton mFab;
-    private RecipeSearchAdapter adapter;
+    private RecipeSearchAdapter recipeSearchAdapter;
+    private SelectedRecipeAdapter selectedRecipeAdapter;
     private ArrayList<Recipe> searchResults;
-    private TextView mSelectedRecipesView;
-    private ArrayList<String> selectedRecipes;
+    private ArrayList<Bitmap> selectedRecipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,26 +45,20 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
         mSearchBar = findViewById(R.id.recipe_searchBar);
         mSearchBar.setOnSearchActionListener(this);
 
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this);
+        horizontalLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        selectedRecipes = new ArrayList<>();
+        selectedRecipeAdapter = new SelectedRecipeAdapter(selectedRecipes);
+        mSelectedRecipesView = findViewById(R.id.rv_selected_recipe);
+        mSelectedRecipesView.setLayoutManager(horizontalLayoutManager);
+        mSelectedRecipesView.setAdapter(selectedRecipeAdapter);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         searchResults = new ArrayList<>();
-        adapter = new RecipeSearchAdapter(searchResults);
+        recipeSearchAdapter = new RecipeSearchAdapter(searchResults, selectedRecipeAdapter);
         mSearchResultView = findViewById(R.id.rv_recipe_search_result);
         mSearchResultView.setLayoutManager(layoutManager);
-        mSearchResultView.setAdapter(adapter);
-
-        mSelectedRecipesView = findViewById(R.id.tv_selected_recipes);
-
-//        mSearchResultView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView textView = (TextView) view;
-//                if (!mSelectedRecipesView.getText().equals("")) mSelectedRecipesView.append(",");
-//                mSelectedRecipesView.append(textView.getText());
-//                selectedRecipes.add(textView.getText().toString());
-//            }
-//        });
-
-        selectedRecipes = new ArrayList<>();
+        mSearchResultView.setAdapter(recipeSearchAdapter);
 
 //        mFab = findViewById(R.id.fab_confirm_selection);
 //        mFab.setOnClickListener(new View.OnClickListener() {
@@ -89,13 +82,6 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
 
     @Override
     public void onSearchConfirmed(CharSequence text) {
-
-//        searchResults.clear();
-//        searchResults.add("Recipe 1");
-//        searchResults.add("Recipe 2");
-//        searchResults.add("Recipe 3");
-//        adapter.notifyDataSetChanged();
-
         String title = mSearchBar.getText();
         EdamamService service = EdamamClient.getClient().create(EdamamService.class);
         Call<RecipeSearchResult> call = service.searchRecipeByTitle(title, EDAMAM_APP_ID, EDAMAM_APP_KEY);
@@ -109,7 +95,7 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
                     List<Recipe> recipes = result.extractRecipes();
                     searchResults.clear();
                     searchResults.addAll(recipes);
-                    adapter.notifyDataSetChanged();
+                    recipeSearchAdapter.notifyDataSetChanged();
                 }
             }
 

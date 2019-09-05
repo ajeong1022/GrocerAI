@@ -21,33 +21,11 @@
         android:textSize="20sp" />
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="vertical">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/recipe_searchBar"
-            android:id="@+id/rv_recipe_search_result"/>
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_confirm_selection"
-            style="@style/Widget.MaterialComponents.FloatingActionButton"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="30dp"
-            android:src="@drawable/ic_check" />
-
+        android:orientation="vertical"
+        android:layout_weight="3">
 
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/recipe_searchBar"
@@ -60,16 +38,40 @@
             app:mt_hint="Spaghetti Bolognese"
             app:mt_maxSuggestionsCount="10" />
 
-    </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/recipe_searchBar"
+            android:id="@+id/rv_recipe_search_result"/>
 
-    <TextView
-        android:id="@+id/tv_selected_recipes"
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        tools:text="Spaghetti, Pizza" />
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_selected_recipe"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_confirm_selection"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_check" />
+
+    </RelativeLayout>
 
 </LinearLayout>
