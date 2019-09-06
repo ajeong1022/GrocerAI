@@ -7,11 +7,16 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerai.RetroFit.RecipeSearchResult.Recipe;
@@ -19,11 +24,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/**
+ * RecyclerView Adapter for the CardViews that display each search result.
+ */
 public class RecipeSearchAdapter extends RecyclerView.Adapter {
 
     private ArrayList<Recipe> searchResults;
     private SelectedRecipeAdapter selectedRecipeAdapter;
 
+    //TODO: Think about replacing the SelectedRecipeAdapter field with a listener pattern and defining the onClick behaviour
+    //in RecipeSelectionActivity inside an anonymous class.
     public RecipeSearchAdapter(ArrayList<Recipe> searchResults, SelectedRecipeAdapter selectedRecipeAdapter) {
         this.searchResults = searchResults;
         this.selectedRecipeAdapter = selectedRecipeAdapter;
@@ -38,20 +48,55 @@ public class RecipeSearchAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Recipe recipe = searchResults.get(position);
-        RecipeSearchViewHolder viewHolder = (RecipeSearchViewHolder) holder;
-        ImageView imageView = viewHolder.imageView;
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+        final Recipe recipe = searchResults.get(position);
+        final RecipeSearchViewHolder viewHolder = (RecipeSearchViewHolder) holder;
+        final ImageView imageView = viewHolder.imageView;
+
         Picasso
                 .get()
                 .load(recipe.getImageURL())
                 .placeholder(R.drawable.groceries)
                 .into(imageView);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                if (!selectedRecipeAdapter.contains(image)) {
+                    selectedRecipeAdapter.addItem(recipe, image);
+                    selectedRecipeAdapter.notifyDataSetChanged();
+                    selectedRecipeAdapter.onSelectedRecipeCountChanged();
+
+                } else
+                    Toast.makeText(imageView.getContext(), "You have already selected this dish", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         viewHolder.titleView.setText(recipe.getTitle());
         TextView urlView = viewHolder.urlView;
         urlView.setMovementMethod(LinkMovementMethod.getInstance());
-        urlView.setText(Html.fromHtml(urlView.getContext().getString(R.string.recipe_search_url,recipe.getURL())));
-        //TODO: Implement list processing to show ingredients in appropriate format.
+        urlView.setText(Html.fromHtml(urlView.getContext().getString(R.string.recipe_search_url, recipe.getURL())));
+        RecyclerView ingredientsView = viewHolder.ingredientsView;
+        viewHolder.ingredientsView.setAdapter(new RecipeSearchIngredientAdapter(recipe.getIngredients()));
+        viewHolder.expandIngredientsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.ingredientsView.setVisibility(viewHolder.isExpanded ? View.GONE : View.VISIBLE);
+
+                //This line enables the sliding animation
+                RecipeSearchAdapter.this.notifyItemChanged(position);
+
+                //Rotate the expand icon.
+                Animation anim = AnimationUtils.loadAnimation(viewHolder.expandIcon.getContext(),
+                        viewHolder.isExpanded ? R.anim.collapse_ingredients_rotation : R.anim.expand_ingredients_rotation);
+                anim.setFillAfter(true);
+                viewHolder.expandIcon.startAnimation(anim);
+
+                viewHolder.isExpanded = !viewHolder.isExpanded;
+            }
+        });
+
     }
 
     @Override
@@ -63,26 +108,68 @@ public class RecipeSearchAdapter extends RecyclerView.Adapter {
 
         private TextView titleView;
         private TextView urlView;
-        private TextView ingreidentView;
+        private LinearLayout expandIngredientsView;
         private ImageView imageView;
+        private ImageView expandIcon;
+        private RecyclerView ingredientsView;
+        private boolean isExpanded = false;
 
         public RecipeSearchViewHolder(@NonNull View itemView) {
             super(itemView);
             titleView = itemView.findViewById(R.id.tv_recipe_search_title);
             urlView = itemView.findViewById(R.id.tv_recipe_search_url);
-            ingreidentView = itemView.findViewById(R.id.tv_recipe_search_ingredients);
+            expandIngredientsView = itemView.findViewById(R.id.ll_recipe_search_ingredients);
             imageView = itemView.findViewById(R.id.iv_recipe_search_image);
             imageView.setBackground(imageView.getContext().getDrawable(R.drawable.background_rounding));
             imageView.setClipToOutline(true);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bitmap image = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-                    selectedRecipeAdapter.addItem(image);
-                    selectedRecipeAdapter.notifyDataSetChanged();
-                    selectedRecipeAdapter.onSelectedRecipeCountChanged();
-                }
-            });
+
+            expandIcon = itemView.findViewById(R.id.iv_expand_icon);
+
+            ingredientsView = itemView.findViewById(R.id.rv_recipe_search_ingredient_list);
+            ingredientsView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+
+        }
+    }
+
+    /**
+     * RecyclerView Adapter for the TextViews that list the ingredients that go into each search result.
+     */
+    private class RecipeSearchIngredientAdapter extends RecyclerView.Adapter {
+
+        private ArrayList<String> ingredients;
+
+        public RecipeSearchIngredientAdapter(ArrayList<String> ingredients) {
+            this.ingredients = ingredients;
+        }
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            TextView textView = (TextView) LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_recipe_search_ingredient, parent, false);
+
+            return new RecipeSearchIngredientViewHolder(textView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            RecipeSearchIngredientViewHolder viewHolder = (RecipeSearchIngredientViewHolder) holder;
+            viewHolder.ingredientView.setText(String.format("• %s", ingredients.get(position)));
+        }
+
+        @Override
+        public int getItemCount() {
+            return ingredients.size();
+        }
+
+        private class RecipeSearchIngredientViewHolder extends RecyclerView.ViewHolder {
+
+            private TextView ingredientView;
+
+            public RecipeSearchIngredientViewHolder(@NonNull View itemView) {
+                super(itemView);
+                ingredientView = (TextView) itemView;
+            }
         }
     }
 

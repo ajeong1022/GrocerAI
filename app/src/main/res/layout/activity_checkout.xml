@@ -9,14 +9,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="15dp"
         android:text="Your checkout summary:"
-        android:textSize="28sp"
-        android:padding="15dp"/>
+        android:textSize="28sp" />
 
 
     <ListView
         android:id="@+id/lv_checkout_summary"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

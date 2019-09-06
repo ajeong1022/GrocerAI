@@ -1,84 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_recipe_search_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/groceries" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/iv_recipe_search_image"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true">
+            android:padding="20dp">
 
-            <TextView
-                android:id="@+id/tv_recipe_search_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:fontFamily="@font/chelsea_market"
-                android:includeFontPadding="false"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="Some Recipe" />
-
-            <TextView
-                android:id="@+id/tv_recipe_search_url"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:linksClickable="true"
-                android:textSize="14sp"
-                android:textColorLink="@color/colorHyperLink"
-                tools:text="Some recipe URL" />
+            <ImageView
+                android:id="@+id/iv_recipe_search_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/groceries" />
 
             <LinearLayout
+                android:id="@+id/ll_recipe_search_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/iv_recipe_search_image"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_recipe_search_ingredients"
+                    android:id="@+id/tv_recipe_search_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:fontFamily="@font/chelsea_market"
                     android:includeFontPadding="false"
-                    android:textSize="16sp"
-                    android:text="Expand ingredient list" />
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Some Recipe" />
 
-                <ImageView
-                    android:layout_marginLeft="5dp"
-                    android:id="@+id/iv_expand_icon"
+                <TextView
+                    android:id="@+id/tv_recipe_search_url"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_expand"/>
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:linksClickable="true"
+                    android:textColorLink="@color/colorHyperLink"
+                    android:textSize="14sp"
+                    tools:text="Some recipe URL" />
+
+                <LinearLayout
+                    android:id="@+id/ll_recipe_search_ingredients"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/chelsea_market"
+                        android:includeFontPadding="false"
+                        android:text="Expand ingredient list"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/iv_expand_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/ic_expand" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
+        </RelativeLayout>
 
-        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recipe_search_ingredient_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingBottom="20dp"
+            android:visibility="gone"/>
 
-    </RelativeLayout>
+
+    </LinearLayout>
 
 
 </androidx.cardview.widget.CardView>

@@ -8,7 +8,7 @@
     <io.fotoapparat.view.CameraView
         android:id="@+id/cv_ingredient_scanner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -21,15 +21,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/shutter_background"/>
+            android:src="@drawable/shutter_background" />
 
         <ImageButton
             android:id="@+id/ib_shutter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
             android:layout_centerInParent="true"
-            android:src="@drawable/shutter_foreground"/>
+            android:background="@null"
+            android:src="@drawable/shutter_foreground" />
 
     </RelativeLayout>
 

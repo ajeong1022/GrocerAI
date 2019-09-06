@@ -3,18 +3,22 @@ package com.example.grocerai;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.example.grocerai.RetroFit.EdamamClient;
 import com.example.grocerai.RetroFit.EdamamService;
 import com.example.grocerai.RetroFit.RecipeSearchResult;
 import com.example.grocerai.RetroFit.RecipeSearchResult.Recipe;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import java.util.ArrayList;
@@ -36,11 +40,12 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
     private RecyclerView mSelectedRecipesView;
     private LinearLayout mSearchEmptyView;
     private LinearLayout mSelectedEmptyView;
-    private FloatingActionButton mFab;
+    private ProgressBar mSearchProgressBar;
+    private Button mConfirmSelectionButton;
     private RecipeSearchAdapter recipeSearchAdapter;
     private SelectedRecipeAdapter selectedRecipeAdapter;
     private ArrayList<Recipe> searchResults;
-    private ArrayList<Bitmap> selectedRecipes;
+    private ArrayList<Pair<Recipe, Bitmap>> selectedRecipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +69,34 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
         mSearchResultView.setLayoutManager(layoutManager);
         mSearchResultView.setAdapter(recipeSearchAdapter);
 
+        //Remove blink effect when applying sliding animation to expandable RV item.
+        ((SimpleItemAnimator) mSearchResultView.getItemAnimator()).setSupportsChangeAnimations(false);
+
         mSearchEmptyView = findViewById(R.id.ll_empty_search_result_view);
         mSelectedEmptyView = findViewById(R.id.ll_empty_search_selected_view);
         selectedRecipeAdapter.setSelectedRecipeCountChangedListener(new SelectedRecipeCountChangedListener() {
             @Override
             public void OnSelectedRecipeCountChanged() {
-                if (selectedRecipeAdapter.getItemCount() == 0 ) mSelectedEmptyView.setVisibility(View.VISIBLE);
-                else mSelectedEmptyView.setVisibility(View.GONE);
+                mSelectedEmptyView.setVisibility(selectedRecipes.size() == 0 ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        mSearchProgressBar = findViewById(R.id.pb_recipe_search);
+
+        mConfirmSelectionButton = findViewById(R.id.bt_confirm_selected_recipes);
+        mConfirmSelectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedRecipes.size() == 0) {
+                    Toast.makeText(RecipeSelectionActivity.this, "You must select at least one recipe.", Toast.LENGTH_SHORT).show();
+                } else {
+                    ArrayList<Recipe> toSend = new ArrayList<>();
+                    for (Pair<Recipe, Bitmap> pair : RecipeSelectionActivity.this.selectedRecipes) {
+                        toSend.add(pair.first);
+                    }
+                    //TODO: Replace Toast with Intent to GroceryListActivity (Either make Recipe Parcelable or serialize using GSON)
+                    Toast.makeText(RecipeSelectionActivity.this, String.valueOf(toSend.size()) + " items selected.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -96,7 +122,7 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
                     searchResults.clear();
                     searchResults.addAll(recipes);
                     recipeSearchAdapter.notifyDataSetChanged();
-                    mSearchEmptyView.setVisibility(View.GONE);
+                    mSearchProgressBar.setVisibility(View.GONE);
                 }
             }
 
@@ -105,6 +131,9 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
                 Log.e(TAG, "Error while searching for recipes: " + t.toString());
             }
         });
+
+        mSearchEmptyView.setVisibility(View.GONE);
+        mSearchProgressBar.setVisibility(View.VISIBLE);
 
     }
 

@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/ic_launcher_background"
     android:gravity="center_horizontal"
-    android:paddingTop="30dp"
     android:orientation="vertical"
+    android:paddingTop="30dp"
     tools:context=".MainActivity">
 
     <TextView
@@ -25,8 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:contentDescription="@string/grocerai_greeting_icon_description"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/grocerai_greeting_icon_description"
         android:src="@drawable/groceries" />
 
     <Button
@@ -50,7 +50,7 @@
         android:fontFamily="@font/bungee"
         android:includeFontPadding="false"
         android:padding="10dp"
-        android:text="@string/button_browse_recipes"
+        android:text="@string/button_browse_settings"
         android:textColor="#8A070707"
         android:textSize="22sp" />
 

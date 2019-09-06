@@ -56,7 +56,7 @@ public class RecipeSearchResult {
             String imageURL = recipe.get("image").getAsString();
             String URL = recipe.get("url").getAsString();
 
-            List<String> ingredients = new ArrayList<>();
+            ArrayList<String> ingredients = new ArrayList<>();
             JsonArray ingredientLines = recipe.getAsJsonArray("ingredientLines");
             for (int j = 0; j < ingredientLines.size(); j++) {
                 ingredients.add(ingredientLines.get(j).getAsString());
@@ -70,9 +70,9 @@ public class RecipeSearchResult {
         private String title;
         private String imageURL;
         private String URL;
-        private List<String> ingredients;
+        private ArrayList<String> ingredients;
 
-        public Recipe(String title, String imageURL, String URL, List<String> ingredients) {
+        public Recipe(String title, String imageURL, String URL, ArrayList<String> ingredients) {
             this.title = title;
             this.imageURL = imageURL;
             this.URL = URL;
@@ -83,7 +83,7 @@ public class RecipeSearchResult {
             return title;
         }
 
-        public List<String> getIngredients() {
+        public ArrayList<String> getIngredients() {
             return ingredients;
         }
 

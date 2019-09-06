@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/ic_launcher_background"
     android:layout_height="match_parent"
+    android:background="@color/ic_launcher_background"
     android:orientation="vertical"
     tools:context=".RecipeSelectionActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="15dp"
         android:fontFamily="@font/bungee"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
         android:gravity="center"
+        android:includeFontPadding="false"
         android:text="@string/recipe_selection_instruction"
         android:textAlignment="center"
-        android:includeFontPadding="false"
         android:textSize="24sp" />
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="28">
+        android:layout_weight="28"
+        android:orientation="vertical">
 
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/recipe_searchBar"
@@ -34,27 +34,36 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            app:mt_roundedSearchBarEnabled="true"
             app:mt_hint="Spaghetti Bolognese"
-            app:mt_maxSuggestionsCount="10" />
+            app:mt_maxSuggestionsCount="10"
+            app:mt_roundedSearchBarEnabled="true" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_recipe_search_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
             android:layout_below="@+id/recipe_searchBar"
-            android:id="@+id/rv_recipe_search_result"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp" />
+
+        <ProgressBar
+            android:id="@+id/pb_recipe_search"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="90dp"
+            android:indeterminateDrawable="@drawable/progressbar_recipe_search"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/ll_empty_search_result_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
             android:layout_below="@+id/recipe_searchBar"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/empty_view_background"
             android:gravity="center"
             android:orientation="vertical">
@@ -70,8 +79,8 @@
                 android:fontFamily="@font/bungee"
                 android:includeFontPadding="false"
                 android:text="@string/empty_view_no_search"
-                android:textSize="18sp"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -84,18 +93,18 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_selected_recipe"
-            android:gravity="center"
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:gravity="center" />
 
         <LinearLayout
             android:id="@+id/ll_empty_search_selected_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/empty_view_background"
             android:gravity="center"
             android:orientation="vertical">
@@ -117,12 +126,12 @@
         android:id="@+id/bt_confirm_selected_recipes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_weight="1"
         android:fontFamily="@font/bungee"
+        android:text="@string/confirm_recipe_selection"
         android:textColor="@color/textDark"
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:text="@string/confirm_recipe_selection"/>
+        android:textSize="20sp" />
 
 
 </LinearLayout>

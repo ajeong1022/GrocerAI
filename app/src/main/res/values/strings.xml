@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">GrocerAI</string>
     <string name="button_begn_shopping">Begin Shopping</string>
-    <string name="button_browse_recipes">Recipes</string>
+    <string name="button_browse_settings">Settings</string>
     <string name="grocerai_greeting_icon_description">GrocerAI Greeting Icon</string>
     <string name="recipe_selection_actionbar">Choose Recipes</string>
     <string name="recipe_selection_instruction">Start by selecting a dish</string>
     <string name="greeting_app_title">GROCER.AI</string>
     <string name="recipe_search_url">&lt;a href="%1$s">Detailed Recipe&lt;/a></string>
-    <string name="confirm_recipe_selection">SHOW WHAT I NEED!</string>
+    <string name="confirm_recipe_selection">Tell me what I need!</string>
     <string name="empty_view_no_search">There are no search results.</string>
     <string name="empty_view_no_selected">There are no selected recipes.</string>
 </resources>
