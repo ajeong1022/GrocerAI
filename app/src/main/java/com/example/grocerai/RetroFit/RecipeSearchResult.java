@@ -1,5 +1,8 @@
 package com.example.grocerai.RetroFit;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
@@ -66,18 +69,38 @@ public class RecipeSearchResult {
         return recipes;
     }
 
-    public class Recipe {
+    public static class Recipe implements Parcelable {
         private String title;
         private String imageURL;
         private String URL;
         private ArrayList<String> ingredients;
 
-        public Recipe(String title, String imageURL, String URL, ArrayList<String> ingredients) {
+        Recipe(String title, String imageURL, String URL, ArrayList<String> ingredients) {
             this.title = title;
             this.imageURL = imageURL;
             this.URL = URL;
             this.ingredients = ingredients;
         }
+
+        Recipe(Parcel in) {
+            title = in.readString();
+            imageURL = in.readString();
+            URL = in.readString();
+            ingredients = new ArrayList<>();
+            in.readStringList(ingredients);
+        }
+
+        public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
+            @Override
+            public Recipe createFromParcel(Parcel source) {
+                return new Recipe(source);
+            }
+
+            @Override
+            public Recipe[] newArray(int size) {
+                return new Recipe[size];
+            }
+        };
 
         public String getTitle() {
             return title;
@@ -93,6 +116,19 @@ public class RecipeSearchResult {
 
         public String getURL() {
             return URL;
+        }
+
+        @Override
+        public int describeContents() {
+            return hashCode();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(title);
+            dest.writeString(imageURL);
+            dest.writeString(URL);
+            dest.writeStringList(ingredients);
         }
     }
 }

@@ -1,20 +1,23 @@
 package com.example.grocerai;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.grocerai.RetroFit.RecipeSearchResult.Recipe;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -23,28 +26,24 @@ public class GroceryListActivity extends AppCompatActivity {
 
     private static final int SCAN_ITEM_REQUEST = 0;
 
-    private ListView mGroceryListView;
+    private Toolbar mToolBar;
     private FloatingActionButton mFab;
-    private ArrayList<String> recipes;
-    private ArrayAdapter<String> mAdapter;
+    private RecyclerView mIngredientsView;
+
+    private ArrayList<Recipe> recipes;
+    private GroceryListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocery_list);
-        mGroceryListView = findViewById(R.id.lv_grocery_list);
-        mFab = findViewById(R.id.fab_scan_item);
-        recipes = getIntent().getStringArrayListExtra("recipes");
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, recipes);
-        mGroceryListView.setAdapter(mAdapter);
-        mGroceryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textView = (TextView) view;
-                textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            }
-        });
+        recipes = getIntent().getParcelableArrayListExtra("recipes");
 
+        mToolBar = findViewById(R.id.toolbar_grocery_list);
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        mFab = findViewById(R.id.fab_scan_item);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +52,13 @@ public class GroceryListActivity extends AppCompatActivity {
             }
         });
 
+        mIngredientsView = findViewById(R.id.rv_grocery_list);
+        mIngredientsView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new GroceryListAdapter(generateGroceryList(recipes));
+        mIngredientsView.setAdapter(adapter);
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        mIngredientsView.addItemDecoration(itemDecoration);
     }
 
     @Override
@@ -72,8 +78,34 @@ public class GroceryListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_checkout) {
-            startActivity(new Intent(this, CheckoutActivity.class));
+            int unchecked = adapter.getUnchecked();
+            if (unchecked > 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+                builder.setMessage(getString(R.string.checkout_dialog_body, unchecked))
+                        .setPositiveButton("Finish", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                NavUtils.navigateUpFromSameTask(GroceryListActivity.this);
+                            }
+                        })
+                        .setNegativeButton("Resume shopping", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            } else NavUtils.navigateUpFromSameTask(this);
         }
         return true;
     }
+
+    private ArrayList<Ingredient> generateGroceryList(ArrayList<Recipe> recipes) {
+        ArrayList<Ingredient> groceryList = new ArrayList<>();
+        for (Recipe recipe : recipes) {
+            for (String ingredient : recipe.getIngredients()) groceryList.add(new Ingredient(ingredient, false));
+        }
+        return groceryList;
+    }
+
 }

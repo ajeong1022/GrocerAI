@@ -1,5 +1,6 @@
 package com.example.grocerai;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.example.grocerai.RetroFit.EdamamClient;
 import com.example.grocerai.RetroFit.EdamamService;
 import com.example.grocerai.RetroFit.RecipeSearchResult;
 import com.example.grocerai.RetroFit.RecipeSearchResult.Recipe;
+import com.google.gson.Gson;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
 import java.util.ArrayList;
@@ -94,8 +96,9 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
                     for (Pair<Recipe, Bitmap> pair : RecipeSelectionActivity.this.selectedRecipes) {
                         toSend.add(pair.first);
                     }
-                    //TODO: Replace Toast with Intent to GroceryListActivity (Either make Recipe Parcelable or serialize using GSON)
-                    Toast.makeText(RecipeSelectionActivity.this, String.valueOf(toSend.size()) + " items selected.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RecipeSelectionActivity.this, GroceryListActivity.class);
+                    intent.putParcelableArrayListExtra("recipes", toSend);
+                    startActivity(intent);
                 }
             }
         });

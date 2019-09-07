@@ -10,7 +10,6 @@
  public class MainActivity extends AppCompatActivity {
 
     private Button startShoppingButton;
-    private Button browseRecipesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

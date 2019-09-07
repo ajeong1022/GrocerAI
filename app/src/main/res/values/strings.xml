@@ -10,4 +10,6 @@
     <string name="confirm_recipe_selection">Tell me what I need!</string>
     <string name="empty_view_no_search">There are no search results.</string>
     <string name="empty_view_no_selected">There are no selected recipes.</string>
+    <string name="grocery_list_title">YOUR GROCERY LIST</string>
+    <string name="checkout_dialog_body">You still have %1$d item(s) remaining.\nAre you sure you want to checkout?</string>
 </resources>
