@@ -8,6 +8,6 @@
 .externalNativeBuild
 .cxx
 edamam.txt
-edamam_id.txt
+edamam_credentials.txt
 GrocerAI.txt
 app/proguard-rules.pro
