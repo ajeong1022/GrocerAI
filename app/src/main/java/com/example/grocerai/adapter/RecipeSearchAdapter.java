@@ -1,4 +1,4 @@
-package com.example.grocerai;
+package com.example.grocerai.adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,7 +19,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.grocerai.RetroFit.RecipeSearchResult.Recipe;
+import com.example.grocerai.R;
+import com.example.grocerai.retrofit.RecipeSearchResult.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,8 +33,6 @@ public class RecipeSearchAdapter extends RecyclerView.Adapter {
     private ArrayList<Recipe> searchResults;
     private SelectedRecipeAdapter selectedRecipeAdapter;
 
-    //TODO: Think about replacing the SelectedRecipeAdapter field with a listener pattern and defining the onClick behaviour
-    //in RecipeSelectionActivity inside an anonymous class.
     public RecipeSearchAdapter(ArrayList<Recipe> searchResults, SelectedRecipeAdapter selectedRecipeAdapter) {
         this.searchResults = searchResults;
         this.selectedRecipeAdapter = selectedRecipeAdapter;
@@ -77,14 +76,14 @@ public class RecipeSearchAdapter extends RecyclerView.Adapter {
         TextView urlView = viewHolder.urlView;
         urlView.setMovementMethod(LinkMovementMethod.getInstance());
         urlView.setText(Html.fromHtml(urlView.getContext().getString(R.string.recipe_search_url, recipe.getURL())));
-        RecyclerView ingredientsView = viewHolder.ingredientsView;
-        viewHolder.ingredientsView.setAdapter(new RecipeSearchIngredientAdapter(recipe.getIngredients()));
+        final RecyclerView ingredientsView = viewHolder.ingredientsView;
+        ingredientsView.setAdapter(new RecipeSearchIngredientAdapter(recipe.getIngredients()));
         viewHolder.expandIngredientsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewHolder.ingredientsView.setVisibility(viewHolder.isExpanded ? View.GONE : View.VISIBLE);
+                ingredientsView.setVisibility(viewHolder.isExpanded ? View.GONE : View.VISIBLE);
 
-                //This line enables the sliding animation
+                //This line enables the sliding animation.
                 RecipeSearchAdapter.this.notifyItemChanged(position);
 
                 //Rotate the expand icon.
@@ -93,6 +92,7 @@ public class RecipeSearchAdapter extends RecyclerView.Adapter {
                 anim.setFillAfter(true);
                 viewHolder.expandIcon.startAnimation(anim);
 
+                //Toggle the isExpanded field.
                 viewHolder.isExpanded = !viewHolder.isExpanded;
             }
         });

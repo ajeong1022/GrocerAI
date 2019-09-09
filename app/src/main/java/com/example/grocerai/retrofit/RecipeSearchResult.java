@@ -1,4 +1,4 @@
-package com.example.grocerai.RetroFit;
+package com.example.grocerai.retrofit;
 
 import android.os.Parcel;
 import android.os.Parcelable;

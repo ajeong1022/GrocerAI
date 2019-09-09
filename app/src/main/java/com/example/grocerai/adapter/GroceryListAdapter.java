@@ -1,4 +1,4 @@
-package com.example.grocerai;
+package com.example.grocerai.adapter;
 
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -10,8 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.grocerai.retrofit.Ingredient;
+import com.example.grocerai.R;
+
 import java.util.ArrayList;
 
+/**
+ * RecyclerView adapter for the grocery list with checkable items.
+ */
 public class GroceryListAdapter extends RecyclerView.Adapter {
 
     private ArrayList<Ingredient> ingredients;
@@ -45,7 +51,7 @@ public class GroceryListAdapter extends RecyclerView.Adapter {
                 //Toggle item bold
                 ingredient.setChecked(!ingredient.isChecked());
                 if (ingredient.isChecked()) {
-                    textView.setTypeface(Typeface.create(textView.getTypeface(),Typeface.NORMAL));
+                    textView.setTypeface(Typeface.create(textView.getTypeface(), Typeface.NORMAL));
                     viewHolder.checkView.setVisibility(View.VISIBLE);
                     unchecked--;
                 } else {

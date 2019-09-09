@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,8 +16,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.grocerai.RetroFit.RecipeSearchResult.Recipe;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.grocerai.adapter.GroceryListAdapter;
+import com.example.grocerai.retrofit.Ingredient;
+import com.example.grocerai.retrofit.RecipeSearchResult.Recipe;
 
 import java.util.ArrayList;
 
@@ -27,9 +27,7 @@ public class GroceryListActivity extends AppCompatActivity {
     private static final int SCAN_ITEM_REQUEST = 0;
 
     private Toolbar mToolBar;
-    private FloatingActionButton mFab;
     private RecyclerView mIngredientsView;
-
     private ArrayList<Recipe> recipes;
     private GroceryListAdapter adapter;
 
@@ -42,15 +40,6 @@ public class GroceryListActivity extends AppCompatActivity {
         mToolBar = findViewById(R.id.toolbar_grocery_list);
         setSupportActionBar(mToolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        mFab = findViewById(R.id.fab_scan_item);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GroceryListActivity.this, CameraActivity.class);
-                startActivityForResult(intent, SCAN_ITEM_REQUEST);
-            }
-        });
 
         mIngredientsView = findViewById(R.id.rv_grocery_list);
         mIngredientsView.setLayoutManager(new LinearLayoutManager(this));
@@ -103,7 +92,8 @@ public class GroceryListActivity extends AppCompatActivity {
     private ArrayList<Ingredient> generateGroceryList(ArrayList<Recipe> recipes) {
         ArrayList<Ingredient> groceryList = new ArrayList<>();
         for (Recipe recipe : recipes) {
-            for (String ingredient : recipe.getIngredients()) groceryList.add(new Ingredient(ingredient, false));
+            for (String ingredient : recipe.getIngredients())
+                groceryList.add(new Ingredient(ingredient, false));
         }
         return groceryList;
     }

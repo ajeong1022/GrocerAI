@@ -16,12 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
-import com.example.grocerai.RetroFit.EdamamClient;
-import com.example.grocerai.RetroFit.EdamamService;
-import com.example.grocerai.RetroFit.RecipeSearchResult;
-import com.example.grocerai.RetroFit.RecipeSearchResult.Recipe;
-import com.google.gson.Gson;
+import com.example.grocerai.adapter.RecipeSearchAdapter;
+import com.example.grocerai.adapter.SelectedRecipeAdapter;
+import com.example.grocerai.adapter.SelectedRecipeCountChangedListener;
+import com.example.grocerai.retrofit.EdamamClient;
+import com.example.grocerai.retrofit.EdamamService;
+import com.example.grocerai.retrofit.RecipeSearchResult;
+import com.example.grocerai.retrofit.RecipeSearchResult.Recipe;
 import com.mancj.materialsearchbar.MaterialSearchBar;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +60,7 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
         mSearchBar = findViewById(R.id.recipe_searchBar);
         mSearchBar.setOnSearchActionListener(this);
 
+        //Setup for the selected recipes list.
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this);
         horizontalLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         selectedRecipes = new ArrayList<>();
@@ -64,6 +69,7 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
         mSelectedRecipesView.setLayoutManager(horizontalLayoutManager);
         mSelectedRecipesView.setAdapter(selectedRecipeAdapter);
 
+        //Setup for the search result list.
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         searchResults = new ArrayList<>();
         recipeSearchAdapter = new RecipeSearchAdapter(searchResults, selectedRecipeAdapter);
@@ -106,7 +112,7 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
 
     @Override
     public void onSearchStateChanged(boolean enabled) {
-        //Don't do anything when the search state changes for now.
+        //Don't do anything when the search state (whether the search bar is focused) changes for now.
     }
 
     @Override
@@ -116,7 +122,7 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
         Call<RecipeSearchResult> call = service.searchRecipeByTitle(title, EDAMAM_APP_ID, EDAMAM_APP_KEY);
         call.enqueue(new Callback<RecipeSearchResult>() {
             @Override
-            public void onResponse(Call<RecipeSearchResult> call, Response<RecipeSearchResult> response) {
+            public void onResponse(@NotNull Call<RecipeSearchResult> call, @NotNull Response<RecipeSearchResult> response) {
                 Log.d(TAG, String.valueOf(response.code()));
 
                 RecipeSearchResult result = response.body();
@@ -126,11 +132,12 @@ public class RecipeSelectionActivity extends AppCompatActivity implements Materi
                     searchResults.addAll(recipes);
                     recipeSearchAdapter.notifyDataSetChanged();
                     mSearchProgressBar.setVisibility(View.GONE);
+                    if (searchResults.size() == 0) mSearchEmptyView.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
-            public void onFailure(Call<RecipeSearchResult> call, Throwable t) {
+            public void onFailure(@NotNull Call<RecipeSearchResult> call, @NotNull Throwable t) {
                 Log.e(TAG, "Error while searching for recipes: " + t.toString());
             }
         });

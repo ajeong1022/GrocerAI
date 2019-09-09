@@ -1,4 +1,4 @@
-package com.example.grocerai;
+package com.example.grocerai.adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,7 +13,8 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.grocerai.RetroFit.RecipeSearchResult.Recipe;
+import com.example.grocerai.R;
+import com.example.grocerai.retrofit.RecipeSearchResult.Recipe;
 
 import java.util.ArrayList;
 

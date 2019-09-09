@@ -1,4 +1,4 @@
-package com.example.grocerai;
+package com.example.grocerai.retrofit;
 
 public class Ingredient {
     private String name;
